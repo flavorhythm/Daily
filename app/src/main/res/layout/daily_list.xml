@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Lunchtime"/>
+    <TextView
+        android:id="@+id/main_txt_lunchToDo"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Placeholder"/>
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="After Work"/>
+    <TextView
+        android:id="@+id/main_txt_afterWork"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:text="Placeholder"/>
+</LinearLayout>
