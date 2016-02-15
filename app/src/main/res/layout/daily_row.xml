@@ -5,11 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
+        android:id="@+id/daily_txt_dayOfWeek"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Placeholder"/>
+    <TextView
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="Lunchtime"/>
     <TextView
-        android:id="@+id/main_txt_lunchToDo"
+        android:id="@+id/daily_txt_lunchtime"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="Placeholder"/>
@@ -18,7 +23,7 @@
         android:layout_width="match_parent"
         android:text="After Work"/>
     <TextView
-        android:id="@+id/main_txt_afterWork"
+        android:id="@+id/daily_txt_dailyToDo"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:text="Placeholder"/>

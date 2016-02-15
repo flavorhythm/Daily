@@ -12,6 +12,23 @@
     tools:context="com.zenoyuki.flavorhythm.daily.MainActivity"
     tools:showIn="@layout/activity_main">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Week"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/main_text_weekNum"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"/>
+    </LinearLayout>
+
     <ListView
         android:id="@+id/main_list_daily"
         android:layout_width="match_parent"

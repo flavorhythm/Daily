@@ -1,15 +1,23 @@
 package com.zenoyuki.flavorhythm.daily;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import data.NameOfDays;
+import data.WeeklyAdapter;
+import model.Week;
 
 public class MainActivity extends AppCompatActivity {
+    private List<Week> weekList;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,14 +26,24 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        Week week = new Week();
+        List<String> lunchtime = new ArrayList<>();
+        lunchtime.add("Go Do Something");
+
+        List<String> dailyToDo = new ArrayList<>();
+        dailyToDo.add("Go Do Something Else");
+
+        week.addDay(NameOfDays.MON, lunchtime, dailyToDo);
+
+        weekList = new ArrayList<>();
+        weekList.add(week);
+
+        WeeklyAdapter weeklyAdapter = new WeeklyAdapter(MainActivity.this, R.layout.daily_row, weekList);
+
+        listView = (ListView)findViewById(R.id.main_list_daily);
+        listView.setAdapter(weeklyAdapter);
+
+        weeklyAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -44,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            startActivity(new Intent(MainActivity.this, OverviewActivity.class));
             return true;
         }
 
