@@ -8,6 +8,8 @@ import data.NameOfDays;
  * Created by zyuki on 2/8/2016.
  */
 public class Day {
+    public static final String DIVIDER = " |-| ";
+
     private List<String> dailyToDo;
 
     private long dateLong;
@@ -25,4 +27,14 @@ public class Day {
     public void setDateLong(long dateLong) {this.dateLong = dateLong;}
     public void setName(NameOfDays name) {this.name = name;}
     public void setRepeating(boolean repeating) {this.repeating = repeating;}
+
+    public String getToDoString() {
+        String allItems = "";
+
+        for(String item : dailyToDo) {
+            allItems += item + DIVIDER;
+        }
+
+        return allItems;
+    }
 }

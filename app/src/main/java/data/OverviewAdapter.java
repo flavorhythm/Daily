@@ -1,13 +1,18 @@
 package data;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import com.zenoyuki.flavorhythm.daily.DisplayWeekActivity;
+import com.zenoyuki.flavorhythm.daily.OverviewActivity;
 import com.zenoyuki.flavorhythm.daily.R;
 
 import java.text.DateFormat;
@@ -17,6 +22,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import dataAccess.WeeklyTable;
 
 /**
  * Created by ZYuki on 2/10/2016.
@@ -28,24 +35,26 @@ public class OverviewAdapter extends ArrayAdapter<OverviewAdapter.WeeksInYear> {
     private int layoutResource;
     private List<WeeksInYear> listOfWeeks;
 
+    private int year;
+
     public OverviewAdapter(Activity activity, int layoutResource, int year) {
         super(activity, layoutResource);
 
-        Log.v("Date", String.valueOf(year));
         this.activity = activity;
         this.layoutResource = layoutResource;
+        this.year = year;
         listOfWeeks = new ArrayList<>();
-        generateWeeksList(year);
+        generateWeeksList();
     }
 
-    private void generateWeeksList(int year) {
+    private void generateWeeksList() {
         final int firstMonth = 0;
         final int firstDay = 1;
         final int dateOffset = 2;
         final int daysInWeek = 7;
 
         Calendar cal = Calendar.getInstance();
-        cal.set(year, firstMonth, firstDay);
+        cal.set(this.year, firstMonth, firstDay);
 
         int startOfWeek = cal.get(Calendar.DAY_OF_WEEK) - dateOffset;
         cal.add(Calendar.DAY_OF_MONTH, -1 * startOfWeek);
@@ -93,14 +102,29 @@ public class OverviewAdapter extends ArrayAdapter<OverviewAdapter.WeeksInYear> {
 
             viewHolder.weekNum = (TextView)row.findViewById(R.id.overviewRow_text_weekNum);
             viewHolder.startingDate = (TextView)row.findViewById(R.id.overviewRow_text_date);
+            viewHolder.detailsBtn =(Button)row.findViewById(R.id.overviewRow_butn_showDetails);
         } else {
             viewHolder = (ViewHolder)row.getTag();
         }
 
         WeeksInYear week = listOfWeeks.get(position);
 
-        viewHolder.weekNum.setText(week.weekNum);
+        viewHolder.weekNum.setText(String.valueOf(week.weekNum));
         viewHolder.startingDate.setText(week.dateString);
+
+        final int finalYear = this.year;
+        final int finalWeekNum = Integer.parseInt(week.weekNum);
+
+        viewHolder.detailsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                 activity.startActivity(
+                         new Intent(activity, DisplayWeekActivity.class)
+                                 .putExtra(WeeklyTable.YEAR, finalYear)
+                                 .putExtra(WeeklyTable.WEEK_NUM, finalWeekNum)
+                 );
+            }
+        });
 
         return row;
     }
@@ -108,6 +132,7 @@ public class OverviewAdapter extends ArrayAdapter<OverviewAdapter.WeeksInYear> {
     class ViewHolder {
         TextView weekNum;
         TextView startingDate;
+        Button detailsBtn;
     }
 
     class WeeksInYear {

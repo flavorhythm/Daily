@@ -27,11 +27,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        WeeklyTable.onCreate(db);
+        DailyTable.onCreate(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        WeeklyTable.onUpgrade(db);
+        DailyTable.onUpgrade(db);
     }
 }

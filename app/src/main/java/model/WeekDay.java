@@ -13,4 +13,14 @@ public class WeekDay extends Day {
     public List<String> getLunchtime() {return this.lunchtime;}
 
     public void setLunchtime(List<String> lunchtime) {this.lunchtime = lunchtime;}
+
+    public String getLunchtimeString() {
+        String allItems = "";
+
+        for(String item : lunchtime) {
+            allItems += DIVIDER + item;
+        }
+
+        return allItems;
+    }
 }

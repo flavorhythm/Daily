@@ -11,9 +11,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import data.OverviewAdapter;
+import dataAccess.WeeklyTable;
 
 public class OverviewActivity extends AppCompatActivity {
     ListView list;
+
+    //TODO: get all weeks and send one week data to "setonitemclicklistener"
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,22 +26,11 @@ public class OverviewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         list = (ListView)findViewById(R.id.overview_list_week);
-        OverviewAdapter adapter = new OverviewAdapter(OverviewActivity.this, R.layout.overview_row, 2016);
+        OverviewAdapter adapter = new OverviewAdapter(OverviewActivity.this, R.layout.overview_row, getCurrentYear());
         list.setAdapter(adapter);
+    }
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
-
-
-
-                startActivityForResult(
-                        new Intent(OverviewActivity.this, DisplayWeekActivity.class),
-                        RESULT_OK,
-                        bundle
-                );
-            }
-        });
+    private int getCurrentYear() {
+        return 2016;
     }
 }
