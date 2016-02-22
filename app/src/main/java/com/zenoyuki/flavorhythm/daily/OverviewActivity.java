@@ -8,7 +8,8 @@ import android.widget.ListView;
 import data.OverviewAdapter;
 
 public class OverviewActivity extends AppCompatActivity {
-    ListView list;
+    private ListView list;
+    private OverviewAdapter overviewAdapter;
 
     //TODO: get all weeks and send one week data to "setonitemclicklistener"
 
@@ -20,8 +21,9 @@ public class OverviewActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         list = (ListView)findViewById(R.id.overview_list_week);
-        OverviewAdapter adapter = new OverviewAdapter(OverviewActivity.this, R.layout.overview_row, getCurrentYear());
-        list.setAdapter(adapter);
+        overviewAdapter = new OverviewAdapter(OverviewActivity.this, R.layout.overview_row, getCurrentYear());
+
+        list.setAdapter(overviewAdapter);
     }
 
     private int getCurrentYear() {

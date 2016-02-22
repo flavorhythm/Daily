@@ -13,26 +13,42 @@
     tools:showIn="@layout/activity_main">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginTop="50dp">
+        android:layout_alignParentStart="true">
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Week"
-            android:gravity="center"/>
+            android:text="Year"/>
+        <TextView
+            android:id="@+id/main_text_year"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Week"/>
         <TextView
             android:id="@+id/main_text_weekNum"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="52"/>
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/main_list_daily"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_alignParentBottom="true"/>
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentEnd="true">
+        <ListView
+            android:id="@+id/main_list_daily"
+            android:layout_width="250dp"
+            android:layout_height="400dp"/>
+        <Button
+            android:id="@+id/display_butn_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="edit"
+            android:textAlignment="textEnd"/>
+    </LinearLayout>
 </RelativeLayout>

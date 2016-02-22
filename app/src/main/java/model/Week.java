@@ -15,7 +15,7 @@ import data.NameOfDays;
 /**
  * Created by zyuki on 2/8/2016.
  */
-public class Week implements Serializable {
+public class Week {
     private List<Day> daysOfWeek;
 
     private int year;
@@ -65,53 +65,13 @@ public class Week implements Serializable {
         return cal.getTimeInMillis();
     }
 
-    @SafeVarargs
-    public final void addDay(NameOfDays name, List<String>... args) {
-        switch(name) {
-            case MON: case TUE: case WED: case THU: case FRI:
-                List<String> afterWork = args[0];
-                List<String> lunchtime = args[1];
-
-                this.daysOfWeek.add(name.ordinal(), createWeekDay(name, afterWork, lunchtime));
-                break;
-            case SAT: case SUN:
-                List<String> dailyToDo = args[0];
-
-                this.daysOfWeek.add(name.ordinal(), createWeekEnd(name, dailyToDo));
-                break;
-        }
-    }
-
-    private final Day createWeekDay(NameOfDays name, List<String> dailyToDo, List<String> lunchtime) {
-        WeekDay dayObj = new WeekDay();
-
-        dayObj.setName(name);
-        dayObj.setDailyToDo(dailyToDo);
-        dayObj.setLunchtime(lunchtime);
-
-        return dayObj;
-    }
-
-    private final Day createWeekEnd(NameOfDays name, List<String> dailyToDo) {
-        WeekEnd dayObj = new WeekEnd();
-
-        dayObj.setName(name);
-        dayObj.setDailyToDo(dailyToDo);
-
-        return dayObj;
-    }
-
-    public final Day getDay(NameOfDays name) {
-        return this.daysOfWeek.get(name.ordinal());
+    public final void addDay(Day day) {
+        this.daysOfWeek.add(day.getName().ordinal(), day);
     }
 
     @Nullable
     public final List<Day> getAllDays() {
         return this.daysOfWeek;
-    }
-
-    public void addDay(Day day) {
-        this.daysOfWeek.add(day);
     }
 
     public int getYear() {return year;}

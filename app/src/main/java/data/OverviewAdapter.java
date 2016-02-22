@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.zenoyuki.flavorhythm.daily.DisplayWeekActivity;
+import com.zenoyuki.flavorhythm.daily.MainActivity;
 import com.zenoyuki.flavorhythm.daily.OverviewActivity;
 import com.zenoyuki.flavorhythm.daily.R;
 
@@ -130,7 +131,7 @@ public class OverviewAdapter extends ArrayAdapter<OverviewAdapter.WeeksInYear> {
             @Override
             public void onClick(View v) {
                  activity.startActivity(
-                         new Intent(activity, DisplayWeekActivity.class)
+                         new Intent(activity, MainActivity.class)
                                  .putExtra(WeeklyTable.YEAR, finalYear)
                                  .putExtra(WeeklyTable.WEEK_NUM, finalWeekNum)
                  );

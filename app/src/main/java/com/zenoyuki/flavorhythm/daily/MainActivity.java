@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,8 +16,8 @@ import java.util.List;
 import data.DailyAdapter;
 import data.NameOfDays;
 import data.OverviewAdapter;
-import data.WeeklyAdapter;
 import dataAccess.DataAccessObject;
+import dataAccess.WeeklyTable;
 import model.Day;
 import model.Week;
 import model.WeekDay;
@@ -30,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private DataAccessObject dataAccess;
     private DailyAdapter dailyAdapter;
 
+    private TextView displayWeekNum, displayYear;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         dataAccess = ((AppOverlay)getApplication()).dataAccess;
+
+        displayWeekNum = (TextView)findViewById(R.id.main_text_weekNum);
+        displayYear = (TextView)findViewById(R.id.main_text_year);
 
         dailyList = new ArrayList<>();
         dailyAdapter = new DailyAdapter(MainActivity.this, R.layout.daily_row, dailyList);
@@ -49,9 +54,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findThisWeek() {
-        int thisYear = Calendar.getInstance().get(Calendar.YEAR);
-        Calendar firstOfYear = OverviewAdapter.findFirstDayOfYear(thisYear);
-        Week week = dataAccess.getWeek(thisYear, findWeekNum(firstOfYear));
+        int thisYear;
+        int thisWeek;
+
+        Bundle bundle = getIntent().getExtras();
+        if(bundle == null) {
+            thisYear = Calendar.getInstance().get(Calendar.YEAR);
+            thisWeek = findWeekNum(OverviewAdapter.findFirstDayOfYear(thisYear));
+        } else {
+            thisYear = bundle.getInt(WeeklyTable.YEAR);
+            thisWeek = bundle.getInt(WeeklyTable.WEEK_NUM);
+        }
+
+        displayWeekNum.setText(String.valueOf(thisWeek));
+        displayYear.setText(String.valueOf(thisYear));
+
+        Week week = dataAccess.getWeek(thisYear, thisWeek);
         List<Day> daysFromDatabase;
 
         if(week != null) {
@@ -64,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                     switch (name) {
                         case MON: case TUE: case WED: case THU: case FRI:
                             WeekDay weekDay = new WeekDay();
-                            WeekDay castWeekDay = (WeekDay) dayInWeek;
+                            WeekDay castWeekDay = (WeekDay)dayInWeek;
 
                             weekDay.setName(name);
                             weekDay.setDateLong(castWeekDay.getDateLong());
@@ -76,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case SAT: case SUN:
                             WeekEnd weekEnd = new WeekEnd();
-                            WeekEnd castWeekEnd = (WeekEnd) dayInWeek;
+                            WeekEnd castWeekEnd = (WeekEnd)dayInWeek;
 
                             weekEnd.setName(name);
                             weekEnd.setDateLong(castWeekEnd.getDateLong());
@@ -87,8 +105,6 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
                 }
-            } else {
-
             }
         }
     }
@@ -100,7 +116,9 @@ public class MainActivity extends AppCompatActivity {
         current.setTimeInMillis(current.getTimeInMillis() - firstOfYear.getTimeInMillis());
         int deltaDays = current.get(Calendar.DAY_OF_YEAR);
 
-        return (int)Math.floor(deltaDays / daysInWeek);
+        Double flooredValue = Math.floor(deltaDays / daysInWeek);
+
+        return flooredValue.intValue();
     }
 
     @Override
