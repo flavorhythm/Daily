@@ -4,9 +4,12 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import data.NameOfDays;
@@ -26,7 +29,90 @@ public class DataAccessObject {
     public DataAccessObject(Context context) {
         dbHelper = DatabaseHelper.getInstance(context);
 
+        try {
+            generateWeeks();
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+
         this.context = context;
+    }
+
+    private void generateWeeks() throws SQLException {
+        int[] years = new int[2];
+        years[0] = Calendar.getInstance().get(Calendar.YEAR);
+        years[1] = years[0] + 1;
+
+        open();
+
+        Cursor weeklyCursor = db.query(
+                WeeklyTable.TABLE_NAME,
+                WeeklyTable.ALL_COLUMNS,
+                WeeklyTable.YEAR + " =? OR " + WeeklyTable.YEAR + " =?",
+                new String[]{String.valueOf(years[0]), String.valueOf(years[1])},
+                null,
+                null,
+                WeeklyTable.WEEK_DATE + " DESC"
+        );
+
+        if(!weeklyCursor.moveToFirst()) {
+            for(int year : years) {
+                insertOneYear(year);
+            }
+        }else if(weeklyCursor.getInt(weeklyCursor.getColumnIndex(WeeklyTable.YEAR)) == years[1]) {
+            insertOneYear(years[1]);
+        }
+
+        weeklyCursor.close();
+        close();
+    }
+
+    private void insertOneYear(int year) {
+        final int weeksInYear = 52;
+        final int daysInWeek = 7;
+        final int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+
+        final int firstMonth = 0;
+        final int firstDay = 1;
+        final int dateOffset = 2;
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(year, firstMonth, firstDay);
+
+        int startOfWeek = cal.get(Calendar.DAY_OF_WEEK) - dateOffset;
+        cal.add(Calendar.DAY_OF_MONTH, -1 * startOfWeek);
+
+        for(int weekNum = 1; weekNum <= weeksInYear; weekNum++) {
+            ContentValues weeklyValues = new ContentValues();
+
+            String weekYearNum = String.valueOf(year);
+            if(weekNum < 10) {weekYearNum += "0";}
+            weekYearNum += weekNum;
+
+            weeklyValues.put(WeeklyTable.WEEK_YEAR_NUM, weekYearNum);
+            weeklyValues.put(WeeklyTable.YEAR, year);
+            weeklyValues.put(WeeklyTable.WEEK_NUM, weekNum);
+
+            long entryId = db.insert(WeeklyTable.TABLE_NAME, null, weeklyValues);
+
+            if(year == thisYear) {
+                for(int dayOfWeek = 0; dayOfWeek < daysInWeek; dayOfWeek++) {
+                    generateDays(dayOfWeek, cal.getTimeInMillis(), entryId);
+
+                    Log.v("input", String.valueOf(dayOfWeek));
+                    cal.add(Calendar.DAY_OF_MONTH, 1);
+                }
+            }
+        }
+    }
+
+    private void generateDays(int day, long date, long foreignKey) {
+        ContentValues dailyValues = new ContentValues();
+        dailyValues.put(DailyTable.WEEK_KEY, foreignKey);
+        dailyValues.put(DailyTable.DATE, date);
+        dailyValues.put(DailyTable.DAY_OF_WEEK, day);
+
+        db.insert(DailyTable.TABLE_NAME, null, dailyValues);
     }
 
     public void open() throws SQLException {
@@ -41,6 +127,9 @@ public class DataAccessObject {
         ContentValues weeklyValues = new ContentValues();
         weeklyValues.put(WeeklyTable.WEEK_DATE, week.getStartingDate());
         weeklyValues.put(WeeklyTable.WEEK_YEAR_NUM, week.getWeekYearNum());
+        weeklyValues.put(WeeklyTable.YEAR, week.getYear());
+        weeklyValues.put(WeeklyTable.WEEK_NUM, week.getWeekNum());
+        weeklyValues.put(WeeklyTable.WEEK_DATE, week.getStartingDate());
 
         long entryId = db.replace(WeeklyTable.TABLE_NAME, null, weeklyValues);
 
@@ -87,8 +176,12 @@ public class DataAccessObject {
         return dailyValues;
     }
 
+    @Nullable
     public Week getWeek(int getYear, int getWeek) {
         List<Week> weekList = new ArrayList<>();
+
+        Log.v("dataAccessData", String.valueOf(getYear));
+        Log.v("dataAccessData", String.valueOf(getWeek));
 
         Cursor weeklyCursor = db.query(
                 WeeklyTable.TABLE_NAME,
@@ -97,7 +190,7 @@ public class DataAccessObject {
                 new String[] {String.valueOf(getYear), String.valueOf(getWeek)},
                 null,
                 null,
-                WeeklyTable.WEEK_DATE + " DESC"
+                WeeklyTable.WEEK_DATE + " ASC"
         );
 
         if(weeklyCursor.moveToFirst()) {
@@ -113,7 +206,7 @@ public class DataAccessObject {
                         new String[] {String.valueOf(foreignKey)},
                         null,
                         null,
-                        DailyTable.DATE + " DESC"
+                        DailyTable.DATE + " ASC"
                 );
 
                 week.setWeekNum(weeklyCursor.getInt(weeklyCursor.getColumnIndex(WeeklyTable.WEEK_NUM)));
@@ -164,13 +257,19 @@ public class DataAccessObject {
     private List<String> parseToDoString(String toDos) {
         List<String> toDoList = new ArrayList<>();
 
-        int dividerIndex = toDos.indexOf(Day.DIVIDER);
+        try{
+            int dividerIndex = toDos.indexOf(Day.DIVIDER);
 
-        while(dividerIndex > 0) {
-            toDoList.add(toDos.substring(0, dividerIndex));
+            while(dividerIndex > 0) {
+                toDoList.add(toDos.substring(0, dividerIndex));
 
-            toDos = toDos.substring(dividerIndex + Day.DIVIDER.length());
-            dividerIndex = toDos.indexOf(Day.DIVIDER);
+                toDos = toDos.substring(dividerIndex + Day.DIVIDER.length());
+                dividerIndex = toDos.indexOf(Day.DIVIDER);
+            }
+        } catch(NullPointerException e) {
+            e.printStackTrace();
+        } finally {
+            toDoList.add("Nothing to do");
         }
 
         return toDoList;

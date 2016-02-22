@@ -39,7 +39,7 @@ public class DailyTable {
     }
 
     public static void onUpgrade(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_DAILY_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 }

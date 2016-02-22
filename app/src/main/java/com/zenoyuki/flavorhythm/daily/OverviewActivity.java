@@ -1,17 +1,11 @@
 package com.zenoyuki.flavorhythm.daily;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import data.OverviewAdapter;
-import dataAccess.WeeklyTable;
 
 public class OverviewActivity extends AppCompatActivity {
     ListView list;

@@ -28,16 +28,16 @@ public class WeeklyTable {
     private static final String CREATE_WEEK_TABLE = "CREATE TABLE " + TABLE_NAME + "(" +
             KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             WEEK_YEAR_NUM + " TEXT UNIQUE NOT NULL, " +
-            WEEK_NUM + " INTEGER NOT NULL" +
-            YEAR + " INTEGER NOT NULL" +
-            WEEK_DATE + " INTEGER NOT NULL);";
+            WEEK_NUM + " INTEGER NOT NULL, " +
+            YEAR + " INTEGER NOT NULL, " +
+            WEEK_DATE + " INTEGER);";
 
     public static void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_WEEK_TABLE);
     }
 
     public static void onUpgrade(SQLiteDatabase db) {
-        db.execSQL("DROP TABLE IF EXISTS " + CREATE_WEEK_TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 }

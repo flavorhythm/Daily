@@ -1,5 +1,7 @@
 package model;
 
+import android.support.annotation.Nullable;
+
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -103,6 +105,7 @@ public class Week implements Serializable {
         return this.daysOfWeek.get(name.ordinal());
     }
 
+    @Nullable
     public final List<Day> getAllDays() {
         return this.daysOfWeek;
     }

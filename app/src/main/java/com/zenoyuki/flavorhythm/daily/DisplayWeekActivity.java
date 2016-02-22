@@ -2,9 +2,10 @@ package com.zenoyuki.flavorhythm.daily;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import data.DailyAdapter;
@@ -28,10 +29,11 @@ public class DisplayWeekActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_week);
 
-        dataAccess = ((AppOverlay)getApplicationContext()).dataAccess;
+        dataAccess = ((AppOverlay)getApplication()).dataAccess;
 
         dailyList = (ListView)findViewById(R.id.display_list_daily);
 
+        daysInWeek = new ArrayList<>();
         dailyAdapter = new DailyAdapter(DisplayWeekActivity.this, R.layout.daily_row, daysInWeek);
         dailyList.setAdapter(dailyAdapter);
 
@@ -45,38 +47,44 @@ public class DisplayWeekActivity extends AppCompatActivity {
 
     private void findWeek(int getYear, int getWeekNum) {
         Week week = dataAccess.getWeek(getYear, getWeekNum);
-        List<Day> daysFromDatabase = week.getAllDays();
+        List<Day> daysFromDatabase;
 
-        for(Day dayInWeek : daysFromDatabase) {
-            NameOfDays name = dayInWeek.getName();
+        if(week != null) {
+            daysFromDatabase = week.getAllDays();
 
-            switch(name) {
-                case MON: case TUE: case WED: case THU: case FRI:
-                    WeekDay weekDay = new WeekDay();
-                    WeekDay castWeekDay = (WeekDay)dayInWeek;
+            if(daysFromDatabase != null) {
+                for(Day dayInWeek : daysFromDatabase) {
+                    NameOfDays name = dayInWeek.getName();
 
-                    weekDay.setName(name);
-                    weekDay.setDateLong(castWeekDay.getDateLong());
-                    weekDay.setLunchtime(castWeekDay.getLunchtime()); //TODO: Confirm this works
-                    weekDay.setDailyToDo(castWeekDay.getDailyToDo());
+                    switch(name) {
+                        case MON: case TUE: case WED: case THU: case FRI:
+                            WeekDay weekDay = new WeekDay();
+                            WeekDay castWeekDay = (WeekDay)dayInWeek;
 
-                    daysInWeek.add(weekDay);
-                    dailyAdapter.notifyDataSetChanged();
-                    break;
-                case SAT: case SUN:
-                    WeekEnd weekEnd = new WeekEnd();
-                    WeekEnd castWeekEnd = (WeekEnd)dayInWeek;
+                            weekDay.setName(name);
+                            weekDay.setDateLong(castWeekDay.getDateLong());
+                            weekDay.setLunchtime(castWeekDay.getLunchtime()); //TODO: Confirm this works
+                            weekDay.setDailyToDo(castWeekDay.getDailyToDo());
 
-                    weekEnd.setName(name);
-                    weekEnd.setDateLong(castWeekEnd.getDateLong());
-                    weekEnd.setDailyToDo(castWeekEnd.getDailyToDo());
+                            daysInWeek.add(weekDay);
+                            dailyAdapter.notifyDataSetChanged();
+                            break;
+                        case SAT: case SUN:
+                            WeekEnd weekEnd = new WeekEnd();
+                            WeekEnd castWeekEnd = (WeekEnd)dayInWeek;
 
-                    daysInWeek.add(weekEnd);
-                    dailyAdapter.notifyDataSetChanged();
-                    break;
+                            weekEnd.setName(name);
+                            weekEnd.setDateLong(castWeekEnd.getDateLong());
+                            weekEnd.setDailyToDo(castWeekEnd.getDailyToDo());
+
+                            daysInWeek.add(weekEnd);
+                            dailyAdapter.notifyDataSetChanged();
+                            break;
+                    }
+                }
+            } else {
+
             }
         }
-
-        dailyAdapter.notifyDataSetChanged();
     }
 }

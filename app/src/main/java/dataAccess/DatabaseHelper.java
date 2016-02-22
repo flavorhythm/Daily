@@ -10,8 +10,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static DatabaseHelper thisInstance;
 
-    private static final String DATABASE_NAME = "fuel_db";
-    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "daily_db";
+    private static final int DATABASE_VERSION = 6;
 
     public static synchronized DatabaseHelper getInstance(Context context) {
         if(thisInstance == null) {

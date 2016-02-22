@@ -5,26 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:id="@+id/daily_txt_dayOfWeek"
+        android:id="@+id/dailyRow_text_dayOfWeek"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Placeholder"/>
-    <TextView
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="Lunchtime"/>
-    <TextView
-        android:id="@+id/daily_txt_lunchtime"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Lunchtime"/>
+        <Button
+            android:id="@+id/dailyRow_butn_addLunchtime"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@android:drawable/ic_input_add"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/dailyRow_linear_lunchtime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/dailyRow_text_lunchtime_01"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Placeholder"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="Placeholder"/>
-    <TextView
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="After Work"/>
-    <TextView
-        android:id="@+id/daily_txt_dailyToDo"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:text="Placeholder"/>
+        android:orientation="horizontal">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="After Work"/>
+        <Button
+            android:id="@+id/dailyRow_butn_addDailyToDo"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@android:drawable/ic_input_add"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/dailyRow_linear_afterWork"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/dailyRow_text_afterWork_01"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Placeholder"
+            android:layout_marginBottom="10dp"/>
+    </LinearLayout>
+
 </LinearLayout>

@@ -3,6 +3,7 @@ package data;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,28 +49,38 @@ public class OverviewAdapter extends ArrayAdapter<OverviewAdapter.WeeksInYear> {
     }
 
     private void generateWeeksList() {
-        final int firstMonth = 0;
-        final int firstDay = 1;
-        final int dateOffset = 2;
         final int daysInWeek = 7;
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(this.year, firstMonth, firstDay);
-
-        int startOfWeek = cal.get(Calendar.DAY_OF_WEEK) - dateOffset;
-        cal.add(Calendar.DAY_OF_MONTH, -1 * startOfWeek);
+        Calendar cal = findFirstDayOfYear(this.year);
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
 
         for(int i = 0; i < WEEKS_IN_YEAR; i++) {
             WeeksInYear week = new WeeksInYear();
 
-            week.weekNum = String.valueOf(i + 1);
+            week.weekNum = (i + 1) < 10 ? "0" : "";
+            week.weekNum += String.valueOf(i + 1);
+
             week.dateString = dateFormat.format(cal.getTime());
 
             listOfWeeks.add(i, week);
             cal.add(Calendar.DAY_OF_MONTH, daysInWeek);
         }
+    }
+
+    public static Calendar findFirstDayOfYear(int year) {
+        final int firstMonth = 0;
+        final int firstDay = 1;
+        final int dateOffset = 2;
+
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(year, firstMonth, firstDay);
+
+        int startOfWeek = cal.get(Calendar.DAY_OF_WEEK) - dateOffset;
+        cal.add(Calendar.DAY_OF_MONTH, -1 * startOfWeek);
+
+        return cal;
     }
 
     @Override

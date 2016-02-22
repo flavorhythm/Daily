@@ -1,7 +1,6 @@
 package data;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import com.zenoyuki.flavorhythm.daily.R;
 import java.util.List;
 
 import model.Day;
-import model.Week;
 import model.WeekDay;
 import model.WeekEnd;
 
@@ -61,9 +59,9 @@ public class DailyAdapter extends ArrayAdapter<Day> {
             row = LayoutInflater.from(activity).inflate(layoutResource, null);
             viewHolder = new ViewHolder();
 
-            viewHolder.dayOfWeek = (TextView)row.findViewById(R.id.daily_txt_dayOfWeek);
-            viewHolder.lunchtime = (TextView)row.findViewById(R.id.daily_txt_lunchtime);
-            viewHolder.dailyToDo = (TextView)row.findViewById(R.id.daily_txt_dailyToDo);
+            viewHolder.dayOfWeek = (TextView)row.findViewById(R.id.dailyRow_text_dayOfWeek);
+            viewHolder.lunchtime = (TextView)row.findViewById(R.id.dailyRow_text_lunchtime_01);
+            viewHolder.dailyToDo = (TextView)row.findViewById(R.id.dailyRow_text_afterWork_01);
         } else {viewHolder = (ViewHolder)row.getTag();}
 
         switch(dayList.get(position).getName()) {
@@ -72,11 +70,11 @@ public class DailyAdapter extends ArrayAdapter<Day> {
 
                 viewHolder.dayOfWeek.setText(weekDay.getName().toString());
                 for(String lunchtime : weekDay.getLunchtime()) {
-                    viewHolder.lunchtime.append(lunchtime);
+                    viewHolder.lunchtime.setText(lunchtime);
                 }
 
                 for(String dailyToDo : weekDay.getDailyToDo()) {
-                    viewHolder.dailyToDo.append(dailyToDo);
+                    viewHolder.dailyToDo.setText(dailyToDo);
                 }
                 break;
             case SAT: case SUN:
@@ -85,7 +83,7 @@ public class DailyAdapter extends ArrayAdapter<Day> {
                 viewHolder.dayOfWeek.setText(weekEnd.getName().toString());
 
                 for(String dailyToDo : weekEnd.getDailyToDo()) {
-                    viewHolder.dailyToDo.append(dailyToDo);
+                    viewHolder.dailyToDo.setText(dailyToDo);
                 }
                 break;
         }
