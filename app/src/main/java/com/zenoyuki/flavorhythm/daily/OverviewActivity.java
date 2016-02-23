@@ -11,8 +11,6 @@ public class OverviewActivity extends AppCompatActivity {
     private ListView list;
     private OverviewAdapter overviewAdapter;
 
-    //TODO: get all weeks and send one week data to "setonitemclicklistener"
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

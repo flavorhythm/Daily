@@ -180,9 +180,6 @@ public class DataAccessObject {
     public Week getWeek(int getYear, int getWeek) {
         List<Week> weekList = new ArrayList<>();
 
-        Log.v("dataAccessData", String.valueOf(getYear));
-        Log.v("dataAccessData", String.valueOf(getWeek));
-
         Cursor weeklyCursor = db.query(
                 WeeklyTable.TABLE_NAME,
                 WeeklyTable.ALL_COLUMNS,

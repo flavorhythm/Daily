@@ -48,7 +48,7 @@ public class OverviewAdapter extends ArrayAdapter<OverviewAdapter.WeeksInYear> {
         listOfWeeks = new ArrayList<>();
         generateWeeksList();
     }
-
+    //TODO: move this method elsewhere
     private void generateWeeksList() {
         final int daysInWeek = 7;
 
@@ -69,6 +69,7 @@ public class OverviewAdapter extends ArrayAdapter<OverviewAdapter.WeeksInYear> {
         }
     }
 
+    //TODO: move this method elsewhere
     public static Calendar findFirstDayOfYear(int year) {
         final int firstMonth = 0;
         final int firstDay = 1;

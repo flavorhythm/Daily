@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:text="Placeholder"/>
     <LinearLayout
+        android:id="@+id/dailyRow_linear_hideLunchtime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -23,16 +24,14 @@
             android:layout_height="20dp"
             android:background="@android:drawable/ic_input_add"/>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/dailyRow_linear_lunchtime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/dailyRow_text_lunchtime_01"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="Placeholder"/>
-    </LinearLayout>
+    <EditText
+        android:id="@+id/dailyRow_edit_lunchtime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <ListView
+        android:id="@+id/dailyRow_list_lunchtime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,23 +39,20 @@
         <TextView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:text="After Work"/>
+            android:text="Daily To Do"/>
         <Button
             android:id="@+id/dailyRow_butn_addDailyToDo"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:background="@android:drawable/ic_input_add"/>
     </LinearLayout>
-    <LinearLayout
-        android:id="@+id/dailyRow_linear_afterWork"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <EditText
-            android:id="@+id/dailyRow_text_afterWork_01"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="Placeholder"
-            android:layout_marginBottom="10dp"/>
-    </LinearLayout>
+    <EditText
+        android:id="@+id/dailyRow_edit_dailyToDo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <ListView
+        android:id="@+id/dailyRow_list_afterWork"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>
